@@ -1,0 +1,21 @@
+# Claude Code — préférences personnelles et overrides locaux (ne pas versionner)
+.claude/settings.local.json
+CLAUDE.local.md
+
+# Secrets et états sensibles (le kit refuse aussi leur lecture via permissions.deny)
+.env
+.env.*
+*.pem
+*.key
+id_rsa*
+*.tfstate
+*.tfstate.backup
+secrets/
+
+# Preuves d'incident : à archiver hors du dépôt public si sensibles
+docs/security/evidence/
+
+# opencode — dépendances installées automatiquement dans les dossiers de config
+.opencode/node_modules/
+.opencode/bun.lock
+.opencode/package-lock.json

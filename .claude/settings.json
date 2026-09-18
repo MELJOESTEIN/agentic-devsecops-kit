@@ -1,0 +1,64 @@
+{
+  "permissions": {
+    "defaultMode": "default",
+    "allow": [
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(pytest:*)",
+      "Bash(ruff:*)",
+      "Bash(gitleaks:*)",
+      "Bash(semgrep:*)",
+      "Bash(trivy:*)",
+      "Bash(checkov:*)",
+      "Bash(pip-audit:*)",
+      "Bash(syft:*)",
+      "Bash(docker build:*)",
+      "Bash(docker compose config:*)",
+      "Bash(terraform plan:*)",
+      "Bash(terraform validate:*)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./**/.env)",
+      "Read(./**/*.pem)",
+      "Read(./**/*.key)",
+      "Read(./**/id_rsa*)",
+      "Read(./**/*.tfstate)",
+      "Read(./**/*.tfstate.backup)",
+      "Read(./secrets/**)",
+      "Read(~/.aws/**)",
+      "Read(~/.ssh/**)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(git commit --no-verify:*)",
+      "Bash(git commit -n:*)",
+      "Bash(terraform apply -auto-approve:*)",
+      "Bash(terraform destroy:*)",
+      "Bash(docker run --privileged:*)",
+      "Bash(curl * | sh:*)",
+      "Bash(curl * | bash:*)",
+      "Bash(rm -rf /:*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          { "type": "command", "command": "bash .claude/hooks/pre-commit-guard.sh" },
+          { "type": "command", "command": "bash .claude/hooks/dependency-guard.sh" }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          { "type": "command", "command": "bash .claude/hooks/post-edit-scan.sh" }
+        ]
+      }
+    ]
+  }
+}
